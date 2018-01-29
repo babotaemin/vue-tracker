@@ -24,6 +24,4 @@ fs
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log(db.sequelize.async());
-
 module.export = db;
