@@ -24,4 +24,4 @@ fs
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.export = db;
+module.exports = db;
