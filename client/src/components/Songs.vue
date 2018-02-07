@@ -26,7 +26,6 @@ export default {
     }
   },
   async mounted () {
-    // Todo
     this.songs = await SongsService.index()
   }
 }
