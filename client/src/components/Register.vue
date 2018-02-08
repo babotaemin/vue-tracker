@@ -19,7 +19,7 @@
             </form>
             <br/>
             <div class="error" v-html="error" />
-            <v-btn 
+            <v-btn
                 dark
                 class="cyan"
                 @click="register">

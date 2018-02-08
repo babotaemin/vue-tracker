@@ -14,7 +14,7 @@
             </v-text-field>
             <br/>
             <div class="error" v-html="error" />
-            <v-btn 
+            <v-btn
                 dark
                 class="cyan"
                 @click="login">
@@ -47,7 +47,7 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
         this.$router.push({
-            name: 'root'
+          name: 'root'
         })
       } catch (error) {
         this.error = error.response.data.error
@@ -55,7 +55,7 @@ export default {
     }
   },
   components: {
-      Panel
+    Panel
   }
 }
 </script>
