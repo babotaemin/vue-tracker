@@ -13,13 +13,15 @@
           </div>
           <v-btn
             dark
-            class="cyan"
-            @click="navigateTo({
+            class="cyan"            
+            :to="{
               name: 'song-edit', 
-              params: { 
-                songId: song.id
+              params () { 
+                return {
+                  songId: song.id
+                }
               }
-            })">
+            }">
             Edit
           </v-btn>
         </v-flex>
@@ -34,20 +36,10 @@
 </template>
 
 <script>
-import Panel from '@/components/Panel'
-
 export default {
   props: [
     'song'
-  ],
-  components: {
-    Panel
-  },
-  methods: {
-    navigateTo (route) {
-      this.$router.push(route)
-    }
-  }
+  ]
 }
 </script>
 
