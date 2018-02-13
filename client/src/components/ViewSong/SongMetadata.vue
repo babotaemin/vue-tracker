@@ -27,18 +27,18 @@
           </v-btn>
 
           <v-btn
-            v-if="isUserLoggedIn"
+            v-if="isUserLoggedIn && !isBookmarked"
             dark
             class="cyan"            
-            @click="setAsBookmark">
+            @click="bookmark">
             Bookmark
           </v-btn>
 
           <v-btn
-            v-if="isUserLoggedIn"
+            v-if="isUserLoggedIn && isBookmarked"
             dark
             class="cyan"            
-            @click="setAsUnbookmark">
+            @click="unbookmark">
             Unbookmark
           </v-btn>
         </v-flex>
@@ -60,20 +60,51 @@ export default {
   props: [
     'song'
   ],
+  data () {
+    return {
+      isBookmarked: false
+    }
+  },
   computed: {
     ...mapState([
       'isUserLoggedIn'
     ])
   },
-  mounted () {
-
+  async mounted () {
+    if (!this.isUserLoggedIn) {
+      return
+    }
+    
+    try {
+      const bookmark = (await BookmarksService.index({
+        songId: this.song.id,
+        userId: this.$store.state.user.id
+      })).data
+      this.isBookmarked = !!bookmark
+    } catch (err) {
+      console.log(err)
+    }
   },
   methods: {
-    setAsBookmark () {
-      console.log('clicked')
+    async bookmark () {
+      try {
+        const bookmark = await BookmarksService.post({
+          songId: this.song.id,
+          userId: this.$store.state.user.id
+        })
+      } catch (err) {
+        console.log(err)
+      }
     },
-    setAsUnbookmark () {
-      console.log('un bookmark clicked')
+    async unbookmark () {
+      try {
+        const bookmark = await BookmarksService.delete({
+          songId: this.song.id,
+          userId: this.$store.state.user.id
+        })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
