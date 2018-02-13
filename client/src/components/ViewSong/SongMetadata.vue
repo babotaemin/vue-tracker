@@ -27,19 +27,19 @@
           </v-btn>
 
           <v-btn
-            v-if="isUserLoggedIn && !isBookmarked"
+            v-if="isUserLoggedIn && !bookmark"
             dark
             class="cyan"            
-            @click="bookmark">
-            Bookmark
+            @click="setAsBookmark">
+            Set as bookmark
           </v-btn>
 
           <v-btn
-            v-if="isUserLoggedIn && isBookmarked"
+            v-if="isUserLoggedIn && bookmark"
             dark
             class="cyan"            
-            @click="unbookmark">
-            Unbookmark
+            @click="unsetAsBookmark">
+            Unset Bookmark
           </v-btn>
         </v-flex>
 
@@ -62,7 +62,7 @@ export default {
   ],
   data () {
     return {
-      isBookmarked: false
+      bookmark: null
     }
   },
   computed: {
@@ -70,38 +70,37 @@ export default {
       'isUserLoggedIn'
     ])
   },
-  async mounted () {
-    if (!this.isUserLoggedIn) {
-      return
-    }
-    
-    try {
-      const bookmark = (await BookmarksService.index({
-        songId: this.song.id,
-        userId: this.$store.state.user.id
-      })).data
-      this.isBookmarked = !!bookmark
-    } catch (err) {
-      console.log(err)
+  watch: {
+    async song () {
+      if (!this.isUserLoggedIn) {
+        return
+      }
+
+      try {
+        this.bookmark = (await BookmarksService.index({
+          songId: this.song.id,
+          userId: this.$store.state.user.id
+        })).data
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
   methods: {
-    async bookmark () {
+    async setAsBookmark () {
       try {
-        const bookmark = await BookmarksService.post({
+        this.bookmark = (await BookmarksService.post({
           songId: this.song.id,
           userId: this.$store.state.user.id
-        })
+        })).data
       } catch (err) {
         console.log(err)
       }
     },
-    async unbookmark () {
+    async unsetAsBookmark () {
       try {
-        const bookmark = await BookmarksService.delete({
-          songId: this.song.id,
-          userId: this.$store.state.user.id
-        })
+        await BookmarksService.delete(this.bookmark.id)
+        this.bookmark = null
       } catch (err) {
         console.log(err)
       }
