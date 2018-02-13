@@ -32,10 +32,7 @@ module.exports = {
         })
       }
 
-      const newBookmark = await Bookmark.create({
-        SongId: songId,
-        UserId: userId
-      })
+      const newBookmark = await Bookmark.create(req.body)
       res.send(newBookmark)
     } catch (err) {
       res.status(500).send({
