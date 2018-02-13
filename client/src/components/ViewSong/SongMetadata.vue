@@ -93,8 +93,7 @@ export default {
     async setAsBookmark () {
       try {
         this.bookmark = (await BookmarksService.post({
-          songId: this.song.id,
-          userId: this.user.id
+          songId: this.song.id
         })).data
       } catch (err) {
         console.log(err)
